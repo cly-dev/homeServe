@@ -16,6 +16,12 @@ import { InfoModule } from '../info/info.module';
 import { InfoController } from './controller/info.controller';
 import { ShopConfigModule } from '../shop-config/shop-config.module';
 import { ShopConfigController } from './controller/shopComfig.controller';
+import { AccountModule } from '../account/account.module';
+import { AuthController } from './controller/auth.controller';
+import { AuthModule } from '../auth/auth.module';
+import { JwtModule, JwtService } from '@nestjs/jwt';
+import { ServiceModule } from '../service/service.module';
+import { ServiceController } from './controller/service.controller';
 
 @Module({
   imports: [
@@ -23,6 +29,9 @@ import { ShopConfigController } from './controller/shopComfig.controller';
     ConfigModule,
     InfoModule,
     ShopConfigModule,
+    AuthModule,
+    AccountModule,
+    ServiceModule,
     MulterModule.register({
       storage: diskStorage({
         destination: join(__dirname, '../../static/'),
@@ -38,7 +47,9 @@ import { ShopConfigController } from './controller/shopComfig.controller';
     PosterController,
     InfoController,
     ShopConfigController,
+    AuthController,
+    ServiceController,
   ],
-  providers: [PublicService],
+  providers: [PublicService, JwtService],
 })
 export class PublicModule {}

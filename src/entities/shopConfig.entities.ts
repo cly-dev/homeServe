@@ -30,9 +30,8 @@ export class ShopConfig {
   title: string;
 
   //富文本
-  @Column({ type: 'text' })
+  @Column('longtext')
   content: string;
-
   //创建时间
   @CreateDateColumn()
   createTime: Date;

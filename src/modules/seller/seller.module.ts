@@ -19,6 +19,10 @@ import { ShopConfigModule } from '../shop-config/shop-config.module';
 import { ShopConfigController } from './controller/shopConfig.controller';
 import { AccountModule } from '../account/account.module';
 import { AccountController } from './controller/account.controller';
+import { ServiceModule } from '../service/service.module';
+import { ServiceController } from './controller/service.controller';
+import { OrderModule } from '../order/order.module';
+import { OrderController } from './controller/order.controller';
 
 @Module({
   imports: [
@@ -28,6 +32,8 @@ import { AccountController } from './controller/account.controller';
     InfoModule,
     ShopConfigModule,
     AccountModule,
+    ServiceModule,
+    OrderModule,
   ],
   controllers: [
     SellerController,
@@ -37,6 +43,8 @@ import { AccountController } from './controller/account.controller';
     InfoController,
     ShopConfigController,
     AccountController,
+    ServiceController,
+    OrderController,
   ],
   providers: [SellerService, SellerStategy],
 })

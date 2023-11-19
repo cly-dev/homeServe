@@ -8,7 +8,7 @@ import { CreateAdminerDto } from '@dto/adminer.dto';
 import { UpdateAdminerDto } from '@dto/adminer.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Adminer } from '../../entities/adminer.entities';
-import { Repository } from 'typeorm';
+import { FindOptionsSelectByString, Repository } from 'typeorm';
 import * as argon2 from 'argon2';
 import { PageSizeDto } from '@/dto/common.dto';
 
@@ -40,11 +40,21 @@ export class AdminerService {
     };
   }
   //寻找某个管理员
-  async findOne(adminId: string) {
+  async findOne(adminId: string, hasPassword = false) {
+    const arr: FindOptionsSelectByString<Adminer> = [
+      'adminId',
+      'avatar',
+      'joinTime',
+      'nickName',
+    ];
+    if (hasPassword) {
+      arr.push('password');
+    }
     return await this.adminerRep.findOne({
       where: {
         adminId,
       },
+      select: arr,
     });
   }
 

@@ -7,8 +7,10 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -20,7 +22,7 @@ import {
 } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { AccountService } from '../../account/account.service';
-import { UpdateAccountDto } from '../../../dto/account.dto';
+import { SearchAccountDto, UpdateAccountDto } from '../../../dto/account.dto';
 import { AccountStatusEnum } from '../../../enum/column.enum';
 
 @ApiTags('管理员-用户管理')
@@ -44,10 +46,19 @@ export class AccountController {
     enum: AccountStatusEnum,
   })
   @Put('/:accountId')
-  async findAll(
+  async update(
     @Param('accountId') accountId,
-    @Body('status') status: UpdateAccountDto,
+    @Body() UpdateAccountDto: UpdateAccountDto,
   ) {
-    return await this.AccountService.update(accountId, status);
+    return await this.AccountService.update(accountId, UpdateAccountDto);
+  }
+
+  @UseGuards(AuthGuard('seller'))
+  @ApiBearerAuth()
+  @ApiHeader({ name: 'Authorization', required: true, description: 'token' })
+  @ApiOperation({ summary: '查询所有的用户' })
+  @Get('/')
+  async findAll(@Query() SearchAccountDto: SearchAccountDto) {
+    return await this.AccountService.findAll(SearchAccountDto);
   }
 }

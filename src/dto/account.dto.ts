@@ -7,26 +7,29 @@ import {
   IsEnum,
   IsNotEmpty,
   IsOptional,
-  IsPhoneNumber,
   IsString,
   Length,
+  Matches,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { PageSizeDto } from './common.dto';
 import { AccountStatusEnum } from '../enum/column.enum';
 
 export class CreateAccountDto {
-  @IsPhoneNumber()
   @IsNotEmpty()
-  @Length(11, 11)
-  @ApiProperty({ required: true, description: '用户账号' })
-  accountId: string;
+  @ApiProperty({ required: true, description: '用户授权的code' })
+  code: string;
 
   @IsOptional()
   @IsString()
   @Length(2, 50)
   @ApiProperty({ required: false, description: '用户昵称' })
   nickName: string;
+
+  @IsOptional()
+  @IsString()
+  @ApiProperty({ required: false, description: '用户头像' })
+  avatar: string;
 }
 
 export class UpdateAccountDto {
@@ -48,7 +51,20 @@ export class UpdateAccountDto {
   })
   @IsEnum(AccountStatusEnum)
   @IsOptional()
-  static: AccountStatusEnum;
+  status?: AccountStatusEnum;
+}
+
+export class UpdateAccountInfoDto {
+  @IsOptional()
+  @IsString()
+  @Length(2, 50)
+  @ApiProperty({ required: false, description: '用户昵称' })
+  nickName: string;
+
+  @IsString()
+  @ApiProperty({ required: false, description: '用户头像' })
+  @IsOptional()
+  avatar: string;
 }
 export class UpdateAccountPasswordDto {
   @IsString()
@@ -60,10 +76,8 @@ export class UpdateAccountPasswordDto {
 
 export class AccountLoginDto {
   @ApiProperty({ required: true, description: '管理员账号' })
-  @IsPhoneNumber()
   @IsNotEmpty()
-  @Length(11, 11)
-  accountId: string;
+  phone: string;
 
   @ApiProperty({ required: true, description: '密码' })
   @IsString()
@@ -71,10 +85,22 @@ export class AccountLoginDto {
   password: string;
 }
 
+export class UpdateAccountLoginInformationDto {
+  @ApiProperty({ required: true, description: '用户密码' })
+  @IsNotEmpty()
+  @Length(8, 16)
+  password: string;
+
+  @ApiProperty({ required: true, description: '用户手机' })
+  @IsNotEmpty()
+  @Matches(/^(?:\+?1\s*)?\d{10}$/, { message: '手机号码有误' })
+  phone: string;
+}
+
 export class SearchAccountDto extends PageSizeDto {
-  @ApiProperty({ required: false, description: '用户id' })
+  @ApiProperty({ required: false, description: '用户联系方式' })
   @IsOptional()
-  accountId: string;
+  phone: string;
 
   @ApiProperty({ required: false, description: '用户昵称' })
   @IsOptional()

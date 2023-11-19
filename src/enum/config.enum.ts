@@ -9,6 +9,10 @@ export enum MySqlEnum {
   DBNAME = 'MYSQL_DBNAME',
   PASSWORD = 'MYSQL_PASSWORD',
 }
+export enum AppEnum {
+  APP_ID = 'APP_ID',
+  APP_SECRET = 'APP_SECRET',
+}
 
 export enum DIR {
   UPLOAD_DIR = 'UPLOAD_DIR',

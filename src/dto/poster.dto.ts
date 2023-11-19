@@ -3,8 +3,15 @@
  * @Date: 2023-10-28 20:46:57
  * @Description:
  */
+import { statusEnum } from '../enum/column.enum';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Length,
+} from 'class-validator';
 
 export class CreatePosterDto {
   @ApiProperty({ required: true, description: '广告标题' })
@@ -38,6 +45,11 @@ export class SearchPosterDto {
   @IsString()
   @IsOptional()
   size: string;
+
+  @ApiProperty({ required: false, description: '广告状态', type: statusEnum })
+  @IsOptional()
+  @IsEnum(statusEnum)
+  status: statusEnum;
 }
 
 export class UpdatePosterDto {
@@ -56,4 +68,9 @@ export class UpdatePosterDto {
   @IsOptional()
   @IsString()
   link?: string;
+
+  @ApiProperty({ required: false, description: '状态' })
+  @IsOptional()
+  @IsEnum(statusEnum)
+  status: statusEnum;
 }

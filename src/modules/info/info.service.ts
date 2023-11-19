@@ -24,9 +24,10 @@ export class InfoService {
   async findAll(SearchInfoDto: SearchiInfoDto) {
     const { page = 1, size = 10, title } = SearchInfoDto;
     const query = this.infoRep.createQueryBuilder('entity');
-
     if (title) {
-      query.where('entity.title Like :title', { title: `%${title}%` });
+      query
+        .where('entity.title LIKE :title', { title: `%${title}%` })
+        .orderBy('entity.sortValue', 'DESC');
     }
     const [list, total] = await query
       .skip((+page - 1) * +size)
@@ -62,5 +63,11 @@ export class InfoService {
     return await this.infoRep.delete({
       id,
     });
+  }
+  async getMaxInfoOrderValue() {
+    return await this.infoRep
+      .createQueryBuilder('entity')
+      .select('MAX(entity.sortValue)', 'maxSortValue')
+      .getRawOne();
   }
 }

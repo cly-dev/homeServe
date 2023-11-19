@@ -19,10 +19,14 @@ export class HttpExceptionFilter implements ExceptionFilter {
     try {
       const status = exception.getStatus();
       if (status !== 200) {
-        res.status(status).send({
+        let message = exception.getResponse()?.['message'];
+        if (Array.isArray(message)) {
+          message = message[0];
+        }
+        res.status(200).send({
           status,
           data: exception.stack,
-          message: exception.message,
+          message,
         });
       }
     } catch {

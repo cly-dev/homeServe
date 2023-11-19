@@ -26,11 +26,14 @@ export class PosterService {
 
   //分页查询广告
   async findAll(SearchPosterDto: SearchPosterDto) {
-    const { page = 1, size = 10, title } = SearchPosterDto;
+    const { page = 1, size = 10, title, status } = SearchPosterDto;
     const query = this.posterRep.createQueryBuilder('entity');
 
     if (title) {
       query.where('entity.title Like :title', { title: `%${title}%` });
+    }
+    if (status) {
+      query.andWhere('entity.status= :status', { status });
     }
     const [list, total] = await query
       .skip((+page - 1) * +size)

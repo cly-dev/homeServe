@@ -16,6 +16,10 @@ export class CreateInfoDto {
   @IsString()
   @IsNotEmpty()
   content: string;
+
+  @ApiProperty({ required: true, description: '排序' })
+  @IsOptional()
+  sortValue: number;
 }
 
 export class SearchiInfoDto {
@@ -47,4 +51,8 @@ export class UpdateInfoDto {
   @IsString()
   @IsOptional()
   content?: string;
+
+  @ApiProperty({ required: true, description: '排序' })
+  @IsOptional()
+  sortValue: number;
 }

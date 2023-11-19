@@ -1,5 +1,9 @@
+/*
+ * @Author: cly-dev 2663118046@qq.com
+ * @Date: 2023-10-28 20:40:08
+ * @Description: 
+ */
 import { Test, TestingModule } from '@nestjs/testing';
-import { PosterController } from './poster.controller';
 import { PosterService } from './poster.service';
 
 describe('PosterController', () => {

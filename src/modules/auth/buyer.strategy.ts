@@ -3,17 +3,22 @@
  * @Date: 2023-10-11 22:15:22
  * @Description:
  */
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
-import { AuthService } from './auth.service';
 import { ConfigService } from '@nestjs/config';
 import { KEYMAP } from '../../enum/config.enum';
+import { AccountService } from './../account/account.service';
 
 @Injectable()
 export class BuyerStategy extends PassportStrategy(Strategy, 'buyer') {
   constructor(
-    private readonly authService: AuthService,
+    private readonly AccountService: AccountService,
     protected readonly configService: ConfigService,
   ) {
     super({
@@ -22,12 +27,14 @@ export class BuyerStategy extends PassportStrategy(Strategy, 'buyer') {
     });
   }
 
-  async validate(payload: { password: string; email: string }) {
-    const user = {};
+  async validate(payload: { phone: string }) {
+    const user = await this.AccountService.findOne(payload.phone);
     if (!user) {
-      throw new UnauthorizedException();
+      throw new NotFoundException('该用户不存在');
+    }
+    if (user.status !== '1') {
+      throw new ForbiddenException('用户账号异常,无法登录');
     }
     return user;
-    // const user;
   }
 }

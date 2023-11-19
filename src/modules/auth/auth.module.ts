@@ -11,6 +11,7 @@ import { KEYMAP } from '../../enum/config.enum';
 import { SellerStategy } from './seller.strategy';
 import { BuyerStategy } from './buyer.strategy';
 import { AdminerModule } from '../adminer/adminer.module';
+import { AccountModule } from '../account/account.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { AdminerModule } from '../adminer/adminer.module';
       }),
     }),
     AdminerModule,
+    AccountModule,
   ],
   providers: [AuthService, SellerStategy, BuyerStategy],
   exports: [AuthService],

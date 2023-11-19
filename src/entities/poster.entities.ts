@@ -3,6 +3,7 @@
  * @Date: 2023-10-27 18:25:17
  * @Description:
  */
+import { statusEnum } from '../enum/column.enum';
 import {
   Column,
   CreateDateColumn,
@@ -27,6 +28,15 @@ export class Poster {
   //标题
   @Column()
   title: string;
+
+  //状态
+  @Column({
+    type: 'enum',
+    enum: statusEnum,
+    nullable: true,
+    default: statusEnum.OFF,
+  })
+  status: statusEnum;
 
   //创建时间
   @CreateDateColumn()

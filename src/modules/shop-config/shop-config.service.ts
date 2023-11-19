@@ -38,7 +38,6 @@ export class ShopConfigService {
 
   //查询某一个类型的配置
   async findByType(type: ShopConfigEnum) {
-    console.log(type);
     console.log('-=----------aa');
     return await this.shopConfigRep
       .createQueryBuilder('entity')

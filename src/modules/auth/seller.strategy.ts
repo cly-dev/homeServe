@@ -23,11 +23,11 @@ export class SellerStategy extends PassportStrategy(Strategy, 'seller') {
   }
 
   async validate(payload: { adminId: string }) {
-    const data = this.adminerServe.findOne(payload.adminId);
-    if (!data) {
+    const adminerInfo = await this.adminerServe.findOne(payload.adminId);
+    if (!adminerInfo) {
       throw new UnauthorizedException();
     }
-    return data;
+    return adminerInfo;
     // const user;
   }
 }
