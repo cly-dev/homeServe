@@ -41,6 +41,7 @@ jobs:
 
       - name: SSH into Server
         uses: easingthemes/ssh-deploy@v2
+
         with:
           SSH_PRIVATE_KEY: ${{secrets.ALIYUN_PRIVATE_KEY}}
           REMOTE_HOST: 39.101.66.41
