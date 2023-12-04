@@ -1,3 +1,8 @@
+<!--
+ * @Author: cly-dev 2663118046@qq.com
+ * @Date: 2023-10-27 18:09:19
+ * @Description:
+-->
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
@@ -71,3 +76,17 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+技术:
+Nest.js + mysql + jwt
+
+dto: 数据传输对象 -- 请求需要的数据
+entities: 定义对象的实体类 --定义表结构
+enum: 定义常规状态的枚举 --状态更易管理
+exception: 拦截统一错误，返回对应的状态提示 --错误统一处理
+interceptor: 非报错的数据进行统一的响应拦截-- 可以让返回的数据结构更加更加规范
+modules\*: 各个模块的的主要文件
+-controller --定义接口
+-service --声明服务和方法
+-modules --管理依赖和依赖注入的入口
+untils: 公共方法

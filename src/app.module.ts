@@ -17,7 +17,6 @@ import { Poster } from './entities/poster.entities';
 import { Info } from './entities/info.entities';
 import { ShopConfig } from './entities/shopConfig.entities';
 import { Account } from './entities/account.entities';
-import { Comment } from './entities/comment.entities';
 import { BuyerModule } from './modules/buyer/buyer.module';
 import { Service } from './entities/service.entities';
 import { Collect } from './entities/collect.entities';
@@ -27,6 +26,7 @@ import { Review } from './entities/review.entities';
 const envFilePath = !process.env.NODE_ENV
   ? `.env`
   : `.env.${process.env.NODE_ENV}`;
+console.log(process.env.NODE_ENV);
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -53,7 +53,6 @@ const envFilePath = !process.env.NODE_ENV
           Collect,
           Address,
           Order,
-          Comment,
           Review,
         ],
         synchronize: true,

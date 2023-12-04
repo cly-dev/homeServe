@@ -4,6 +4,13 @@
  * @Description:
  */
 import {
+  ApiBearerAuth,
+  ApiHeader,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
+import { CreateReviewsDto } from '../../../dto/review.dto';
+import {
   Controller,
   Get,
   Post,
@@ -11,34 +18,61 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
+  Req,
+  Query,
 } from '@nestjs/common';
+import { ReviewService } from '../../../modules/review/review.service';
+import { AuthGuard } from '@nestjs/passport';
+import { PageSizeDto } from '../../../dto/common.dto';
 
-@Controller('review')
+@ApiTags('用户-评论')
+@Controller('/buyer/review')
 export class ReviewController {
-  // constructor(private readonly reviewService: ReviewService) {}
+  constructor(private readonly reviewService: ReviewService) {}
 
-  // @Post()
-  // create(@Body() createReviewDto: CreateReviewDto) {
-  //   return this.reviewService.create(createReviewDto);
-  // }
+  @ApiOperation({ summary: '创建评论' })
+  @ApiBearerAuth()
+  @ApiHeader({ name: 'Authorization', required: true, description: 'token' })
+  @UseGuards(AuthGuard('buyer'))
+  @Post('/')
+  async create(@Req() req, @Body() createReviewDto: CreateReviewsDto) {
+    const { accountId } = req.user;
+    await this.reviewService.create(accountId, createReviewDto);
+  }
 
-  // @Get()
-  // findAll() {
-  //   return this.reviewService.findAll();
-  // }
+  @ApiOperation({ summary: '获取用户所有评论' })
+  @ApiBearerAuth()
+  @ApiHeader({ name: 'Authorization', required: true, description: 'token' })
+  @UseGuards(AuthGuard('buyer'))
+  @Get('/')
+  findAll(@Req() req, @Query() pageSizeDto: PageSizeDto) {
+    const { accountId } = req.user;
+    return this.reviewService.findAll({ accountId }, pageSizeDto);
+  }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.reviewService.findOne(+id);
-  // }
+  // 获取订单详情
+  @ApiOperation({ summary: '获取评论详情' })
+  @ApiBearerAuth()
+  @ApiHeader({ name: 'Authorization', required: true, description: 'token' })
+  @UseGuards(AuthGuard('buyer'))
+  @Get('/:id')
+  async findOne(@Param('id') id: string) {
+    return await this.reviewService.findOne(+id);
+  }
 
   // @Patch(':id')
   // update(@Param('id') id: string, @Body() updateReviewDto: UpdateReviewDto) {
   //   return this.reviewService.update(+id, updateReviewDto);
   // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    // return this.reviewService.remove(+id);
+  //删除订单
+  @ApiOperation({ summary: '删除评价' })
+  @ApiBearerAuth()
+  @ApiHeader({ name: 'Authorization', required: true, description: 'token' })
+  @UseGuards(AuthGuard('buyer'))
+  @Delete('/:id')
+  async remove(@Param('id') id: string) {
+    return await this.reviewService.remove(+id);
   }
 }

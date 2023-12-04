@@ -33,7 +33,6 @@ export class Poster {
   @Column({
     type: 'enum',
     enum: statusEnum,
-    nullable: true,
     default: statusEnum.OFF,
   })
   status: statusEnum;

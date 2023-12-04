@@ -8,8 +8,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Review } from './review.entities';
 
 @Entity()
 export class Service {
@@ -37,7 +40,8 @@ export class Service {
   @Column({
     type: 'enum',
     enum: PriceTypeEnum,
-    nullable: false,
+    nullable: true,
+    default: PriceTypeEnum.Hour,
   })
   priceType: PriceTypeEnum;
 
@@ -58,7 +62,7 @@ export class Service {
   iconBgColor: string;
 
   // //图片列表
-  @Column('varchar', { array: true, nullable: false })
+  @Column({ nullable: true, default: '' })
   imagesUrl: string;
 
   //视频
@@ -76,4 +80,8 @@ export class Service {
   //创建时间
   @CreateDateColumn()
   createTime: Date;
+
+  @OneToMany(() => Review, (review) => review.service)
+  @JoinColumn()
+  review: Review[];
 }

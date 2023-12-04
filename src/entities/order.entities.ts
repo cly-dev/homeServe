@@ -9,9 +9,13 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
+  OneToOne,
   PrimaryColumn,
 } from 'typeorm';
 import { Account } from './account.entities';
+import { Review } from './review.entities';
+
 import { OrderStatusEnum } from '../enum/column.enum';
 
 @Entity()
@@ -62,7 +66,7 @@ export class Order {
   orderStatus: OrderStatusEnum;
 
   //取消留言
-  @Column()
+  @Column({ nullable: true, default: '' })
   returnReason: string;
 
   //创建时间
@@ -72,4 +76,8 @@ export class Order {
   //支付时间
   @Column({ nullable: true, default: '' })
   payTime: string;
+
+  @OneToOne(() => Review, (review) => review.order)
+  @JoinColumn()
+  review: Review;
 }

@@ -16,7 +16,7 @@ import {
 import { Collect } from './collect.entities';
 import { Address } from './address.entities';
 import { Order } from './order.entities';
-import { Comment } from './comment.entities';
+import { Review } from './review.entities';
 
 @Entity()
 export class Account {
@@ -72,7 +72,7 @@ export class Account {
   order: Order[];
 
   //评论
-  @OneToMany(() => Comment, (comment) => comment.account)
+  @OneToMany(() => Review, (review) => review.account)
   @JoinColumn()
-  comment: Comment[];
+  review: Review[];
 }

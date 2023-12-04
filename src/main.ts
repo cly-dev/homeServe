@@ -31,6 +31,6 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
-  await app.listen(3000);
+  await app.listen(3000); //localhost: 3000/  127.0.0.1:3000
 }
 bootstrap();

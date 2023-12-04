@@ -16,8 +16,9 @@ import { AddressController } from './controllers/address.controller';
 import { OrderModule } from '../order/order.module';
 import { OrderController } from './controllers/order.controller';
 import { ServiceModule } from '../service/service.module';
-import { PosterService } from '../poster/poster.service';
 import { PosterModule } from '../poster/poster.module';
+import { ReviewModule } from '../review/review.module';
+import { ReviewController } from './controllers/review.controller';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { PosterModule } from '../poster/poster.module';
     OrderModule,
     ServiceModule,
     PosterModule,
+    ReviewModule,
   ],
   controllers: [
     BuyerController,
@@ -35,6 +37,7 @@ import { PosterModule } from '../poster/poster.module';
     CollectController,
     AddressController,
     OrderController,
+    ReviewController,
   ],
   providers: [BuyerService],
 })

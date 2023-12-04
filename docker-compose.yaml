@@ -1,0 +1,18 @@
+version: '3.8'
+
+networks:
+  mybridge:
+
+services:
+  mynest:
+    image: mynest:1.0.1
+    ports:
+      - 3000:3000
+    networks:
+      - mybridge
+  mysql:
+    image: mysql:latest
+    ports:
+      - 3306:3306
+    networks:
+      - mybridge

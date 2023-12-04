@@ -10,6 +10,7 @@ import {
   Controller,
   Get,
   InternalServerErrorException,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -42,14 +43,14 @@ export class OrderController {
     protected readonly serviceService: ServiceService,
     protected readonly addressService: AddressService,
   ) {}
-  @ApiOperation({ summary: '创建订单' })
+  @ApiOperation({ summary: '创建订单' }) //--待确认
   @ApiBearerAuth()
   @ApiHeader({ name: 'Authorization', required: true, description: 'token' })
   @UseGuards(AuthGuard('buyer'))
   @Post('/')
   async create(@Req() req, @Body() createOrderDto: CreateOrderDto) {
     const { user } = req;
-    //订单Id
+    //订单Id --生成订单编号
     const orderId = generateOrderNumber(user.accountId);
     //服务Id
     const { serviceId } = createOrderDto;
@@ -70,7 +71,7 @@ export class OrderController {
     return orderId;
   }
 
-  @ApiOperation({ summary: '确认订单' })
+  @ApiOperation({ summary: '确认订单' }) //-待支付
   @ApiBearerAuth()
   @ApiHeader({ name: 'Authorization', required: true, description: 'token' })
   @UseGuards(AuthGuard('buyer'))
@@ -89,11 +90,12 @@ export class OrderController {
       addressCache: JSON.stringify(addressInfo),
       orderStatus: OrderStatusEnum.WAIT_PAY,
       totalPrice: comfirmOrderDto.totalPrice,
+      remark: comfirmOrderDto.remark,
       serviceStartTime: comfirmOrderDto.serviceStartTime,
     });
   }
 
-  @ApiOperation({ summary: '支付' })
+  @ApiOperation({ summary: '支付' }) //-待服务
   @ApiBearerAuth()
   @ApiHeader({ name: 'Authorization', required: true, description: 'token' })
   @UseGuards(AuthGuard('buyer'))
@@ -105,7 +107,7 @@ export class OrderController {
     });
   }
 
-  @ApiOperation({ summary: '取消订单' })
+  @ApiOperation({ summary: '取消订单' }) //-取消服务
   @ApiBearerAuth()
   @ApiHeader({ name: 'Authorization', required: true, description: 'token' })
   @UseGuards(AuthGuard('buyer'))
@@ -120,7 +122,7 @@ export class OrderController {
     });
   }
 
-  @ApiOperation({ summary: '完成订单' })
+  @ApiOperation({ summary: '完成订单' }) //-完成
   @ApiBearerAuth()
   @ApiHeader({ name: 'Authorization', required: true, description: 'token' })
   @UseGuards(AuthGuard('buyer'))
@@ -137,7 +139,15 @@ export class OrderController {
   @UseGuards(AuthGuard('buyer'))
   @Get('/:orderId')
   async findOne(@Param('orderId') orderId) {
-    return await this.orderService.findOne(orderId);
+    const data = await this.orderService.findOne(orderId);
+    if (data) {
+      console.log(data);
+      const isReviewed = data.review ? true : false;
+      delete data.review;
+      return { ...data, isReviewed };
+    } else {
+      throw new NotFoundException('未找到改订单');
+    }
   }
 
   @ApiOperation({ summary: '查询所有订单信息' })

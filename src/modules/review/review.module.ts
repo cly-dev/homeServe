@@ -7,9 +7,11 @@ import { Module } from '@nestjs/common';
 import { ReviewService } from './review.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Review } from '../../entities/review.entities';
+import { OrderModule } from '../order/order.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Review])],
+  imports: [TypeOrmModule.forFeature([Review]), OrderModule],
   providers: [ReviewService],
+  exports: [ReviewService],
 })
 export class ReviewModule {}

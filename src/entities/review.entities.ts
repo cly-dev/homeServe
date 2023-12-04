@@ -22,15 +22,15 @@ export class Review {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Account)
-  @JoinColumn()
+  @ManyToOne(() => Account, (account) => account.review)
+  @JoinColumn({ name: 'accountId' })
   account: Account;
 
-  @OneToOne(() => Service)
+  @ManyToOne(() => Service, (service) => service.review)
   @JoinColumn()
   service: Service;
 
-  @OneToOne(() => Order)
+  @OneToOne(() => Order, (order) => order.review)
   @JoinColumn()
   order: Order;
 
@@ -43,7 +43,7 @@ export class Review {
   rate: number;
 
   //  是否在前台显示
-  @Column()
+  @Column({ nullable: true, default: false })
   isShow: boolean;
 
   //创建时间

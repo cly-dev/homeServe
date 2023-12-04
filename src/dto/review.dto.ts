@@ -1,4 +1,3 @@
-import { PartialType } from '@nestjs/mapped-types';
 /*
  * @Author: cly-dev 2663118046@qq.com
  * @Date: 2023-11-09 21:45:34
@@ -6,11 +5,11 @@ import { PartialType } from '@nestjs/mapped-types';
  */
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsBoolean,
   IsEnum,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
-  isNumber,
+  IsString,
 } from 'class-validator';
 
 export class CreateReviewsDto {
@@ -22,26 +21,12 @@ export class CreateReviewsDto {
   @ApiProperty({ required: false, description: '描述' })
   @IsOptional()
   content?: string;
-}
 
-export class UpdateAddrssDto {
-  @ApiProperty({ required: true, description: '街道' })
-  @IsOptional()
-  @IsNotEmpty()
-  street: string;
+  @ApiProperty({ required: true, description: '订单id' })
+  @IsString()
+  orderId: string;
 
-  @ApiProperty({ required: true, description: '手机号' })
-  @IsOptional()
-  @IsNotEmpty()
-  phone: string;
-
-  @ApiProperty({ required: true, description: '联系人姓名' })
-  @IsOptional()
-  @IsNotEmpty()
-  userName: string;
-
-  @ApiProperty({ required: true, description: '是否是默认地址' })
-  @IsOptional()
-  @IsBoolean()
-  isDefault: boolean;
+  @ApiProperty({ required: true, description: '服务Id' })
+  @IsNumber()
+  serviceId: number;
 }

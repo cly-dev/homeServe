@@ -23,7 +23,7 @@ export class BuyerStategy extends PassportStrategy(Strategy, 'buyer') {
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: configService.get(KEYMAP.SECRETKEY),
+      secretOrKey: configService.get(KEYMAP.SECRETKEY), //密钥
     });
   }
 

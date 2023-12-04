@@ -66,9 +66,14 @@ export class OrderService {
   //查询特定订单的信息
   async findOne(orderId: string) {
     return await this.orderRep.findOne({
+      order: {
+        createTime: 'DESC',
+      },
       where: {
         orderId,
       },
+
+      relations: ['review'],
     });
   }
   //更新订单的信息
