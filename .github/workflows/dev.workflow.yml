@@ -29,3 +29,24 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64,linux/arm64/v8
           tags: clydev/demo:latest
+  deploy:
+    name: Deploy ${{ github.repository }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: SSH into Server
+        uses: easingthemes/ssh-deploy@v2
+        with:
+          SSH_PRIVATE_KEY: ${{secrets.ALIYUN_PRIVATE_KEY}}
+          REMOTE_HOST: 39.101.66.41
+          REMOTE_USER: root
+      - name: Copy project to server
+        run: scp -r ./  root@39.101.66.41:/app
+      - name: build
+        run: |
+          ssh root@39.101.66.41 'cd /app && docker build -t mynest:latest .'
+      - name: SSH into server and run Docker container
+        run: |
+          sshroot@39.101.66.41 'docker run -d -p 80:3000 --name nest-app mynest:latest'
