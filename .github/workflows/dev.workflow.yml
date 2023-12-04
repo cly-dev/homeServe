@@ -6,10 +6,14 @@ on:
 jobs:
   Docker-Build-Push:
     name: env
-    runs-on: node-latest
+    runs-on: ubuntu-latest
     steps:
       - name: checkout out res code
         uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.18.0'
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
