@@ -39,15 +39,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: SSH into Server
-        uses: easingthemes/ssh-deploy@v2
-
+      - name: Deploy to Server
+        uses: easingthemes/ssh-deploy@v2.1.5
         with:
-          SSH_PRIVATE_KEY: ${{secrets.ALIYUN_PRIVATE_KEY}}
-          REMOTE_HOST: 39.101.66.41
           REMOTE_USER: root
-      - name: Copy project to server
-        run: scp -r ./  root@39.101.66.41:/app
+          REMOTE_HOST: '39.101.66.41'
+          SSH_PRIVATE_KEY: ${{secrets.ALIYUN_PRIVATE_KEY}}
+          TARGET: /root/app
+          SOURCE: ./
       - name: build
         run: |
           ssh root@39.101.66.41 'cd /app && docker build -t mynest:latest .'
