@@ -49,7 +49,7 @@ jobs:
           SOURCE: ./
       - name: build
         run: |
-          ssh -i ${{secrets.ALIYUN_PRIVATE_KEY}} root@39.101.66.41 'cd /app && docker build -t mynest:latest .'
+          ssh -i ${{secrets.ALIYUN_PRIVATE_KEY}} root@39.101.66.41 'cd ./root/app && docker build -t mynest:latest .'
       - name: SSH into server and run Docker container
         run: |
           ssh -i ${{secrets.ALIYUN_PRIVATE_KEY}} root@39.101.66.41 'docker run -d -p 80:3000 --name nest-app mynest:latest'
