@@ -68,7 +68,7 @@ export class AuthService {
   }
 
   //对字段进行加密
-  async signToken(params: Object) {
+  async signToken(params: any) {
     return await this.jwtService.signAsync(params);
   }
 }

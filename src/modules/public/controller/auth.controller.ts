@@ -34,8 +34,7 @@ export class AuthController {
   @Post('/signUp')
   async signUp(@Body() CreateAccountDto: CreateAccountDto) {
     const code = CreateAccountDto.code;
-    const data = //获取用户的openId
-    (
+    const data = (
       await axios.get(
         `https://api.weixin.qq.com/sns/jscode2session?appid=${this.configService.get(
           AppEnum.APP_ID,
