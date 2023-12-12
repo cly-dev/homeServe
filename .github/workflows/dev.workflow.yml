@@ -4,52 +4,53 @@ on:
     branches:
       - master
 jobs:
-  #   Docker-Build-Push:
-  #     name: env
-  #     runs-on: ubuntu-latest
-  #     steps:
-  #       - name: checkout out res code
-  #         uses: actions/checkout@v2
-  #       - name: Set up Node.js
-  #         uses: actions/setup-node@v3
-
-  #         with:
-  #           node-version: '16.18.0'
-  #       - name: Set up QEMU
-
-  #         uses: docker/setup-qemu-action@v3
-  #       - name: Set up Docker Buildx
-  #         uses: docker/setup-buildx-action@v3
-  #       - name: Login to Docker Hub
-  #         uses: docker/login-action@v3
-  #         with:
-  #           username: ${{ secrets.DOCKER_USERNAME }}
-  #           password: ${{ secrets.DOCKER_PASSWORD }}
-  #       - name: Build and push
-  #         uses: docker/build-push-action@v5
-  #         with:
-
-  #           push: true
-  #           platforms: linux/amd64,linux/arm64,linux/arm64/v8
-  #           tags: clydev/app:latest
-  deploy:
-    name: Deploy ${{ github.repository }}
+  Docker-Build-Push:
+    name: env
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: checkout out res code
         uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
 
-      - name: Deploy to Server
-        uses: easingthemes/ssh-deploy@v2.1.5
         with:
-          REMOTE_USER: root
-          REMOTE_HOST: '39.101.66.41'
-          SSH_PRIVATE_KEY: ${{secrets.ALIYUN_PRIVATE_KEY}}
-          TARGET: /root/app
-          SOURCE: ./
+          node-version: '16.18.0'
+      - name: Set up QEMU
+
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login
+        run: echo "${{ secrets.ACR_PASSWORD }}" | docker login -u ${{ secrets.ACR_USERNAME }} ${{ secrets.ACR_REGISTRY }} --password-stdin
       - name: build
-        run: |
-          ssh -i ${{secrets.ALIYUN_PRIVATE_KEY}} root@39.101.66.41 'cd ./root/app && docker build -t mynest:latest .'
-      - name: SSH into server and run Docker container
-        run: |
-          ssh -i ${{secrets.ALIYUN_PRIVATE_KEY}} root@39.101.66.41 'docker run -d -p 80:3000 --name nest-app mynest:latest'
+        #多架构构建并且push
+        run: docker buildx build --platform linux/amd64 --push -t ${{ secrets.ACR_REGISTRY }}/mynest:1.0.1
+
+  # deploy:
+  #   name: Deploy ${{ github.repository }}
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v2
+
+  #     - name: Deploy to Server
+  #       uses: easingthemes/ssh-deploy@v2.1.5
+  #       with:
+  #         REMOTE_USER: root
+  #         REMOTE_HOST: '39.101.66.41'
+  #         SSH_PRIVATE_KEY: ${{secrets.ALIYUN_PRIVATE_KEY}}
+  #         TARGET: /root/app
+  #         SOURCE: ./
+  #     - name: Connect to ECS Instance
+  #       uses: actions/ssh-env@v2
+  #       with:
+  #         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }} # 请替换为您的SSH私钥
+  #         host: <your-ec2-instance-ip> # 请替换为您的ECS实例的IP地址
+  #         username: <your-username> # 请替换为您在ECS实例上的用户名
+  #     - name: build
+  #       run: |
+  #         ssh -i ${{secrets.ALIYUN_PRIVATE_KEY}} root@39.101.66.41 'cd ./root/app && docker build -t mynest:latest .'
+  #     - name: SSH into server and run Docker container
+  #       run: |
+  #         ssh -i ${{secrets.ALIYUN_PRIVATE_KEY}} root@39.101.66.41 'docker run -d -p 80:3000 --name nest-app mynest:latest'
