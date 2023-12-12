@@ -46,6 +46,7 @@ jobs:
           ssh -i ~/.ssh/id_rsa root@39.101.66.41 "docker pull registry.cn-hangzhou.aliyuncs.com/cly_image/mynest:1.0.1"
       # - name: build
       #   run: |
+
       #     ssh -i ${{secrets.ALIYUN_PRIVATE_KEY}} root@39.101.66.41 'cd ./root/app && docker build -t mynest:latest .'
       # - name: SSH into server and run Docker container
       #   run: |
