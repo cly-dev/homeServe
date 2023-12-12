@@ -47,7 +47,7 @@ export class CollectController {
   @Delete('/:serviceId')
   async delete(@Req() req, @Param('serviceId') serviceId: string) {
     const { accountId } = req.user;
-    
+
     await this.collectService.remove(+serviceId, accountId);
   }
 
