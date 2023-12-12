@@ -14,8 +14,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '16.18.0'
-      - name: Npm run lint
+      - name: Npm intall and run lint
         run: |
+          npm i 
           npm run lint
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
