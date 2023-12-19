@@ -50,7 +50,7 @@ jobs:
 
       - name: SSH into Aliyun Server and execute command
         run: |
-          ssh -i ~/.ssh/id_rsa root@39.101.66.41 "echo "${{ secrets.ACR_PASSWORD }}" | docker login -u ${{ secrets.ACR_USERNAME }} ${{ secrets.ACR_REGISTRY }} --password-stdin && docker pull registry.cn-hangzhou.aliyuncs.com/cly_image/mynest:1.0.1 && docker run -p 3000:3000 registry.cn-hangzhou.aliyuncs.com/cly_image/mynest:1.0.1"
+          ssh -i ~/.ssh/id_rsa root@39.101.66.41 "echo "${{ secrets.ACR_PASSWORD }}" | docker login -u ${{ secrets.ACR_USERNAME }} ${{ secrets.ACR_REGISTRY }} --password-stdin && docker pull registry.cn-hangzhou.aliyuncs.com/cly_image/mynest:1.0.1 && docker run -d -p 3000:3000 registry.cn-hangzhou.aliyuncs.com/cly_image/mynest:1.0.1"
       # - name: build
       #   run: |
 
